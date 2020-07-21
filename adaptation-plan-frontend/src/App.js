@@ -1,18 +1,16 @@
 import React from 'react';
 import './App.css';
-import Account from "./AccountComponents/AccountComponents/Account";
-import SignInForm from "./AccountComponents/AccountComponents/SignInForm";
-import Plan from "./AccountComponents/AccountComponents/Plan";
+import Account from "./Components/Account/AccountComponents/Account";
+import SignInForm from "./Components/Auth/SignInForm";
+import Plan from "./Components/Account/AccountComponents/Plan/Plan";
 import {Route, Switch} from "react-router-dom";
 
 function App() {
   return (
-    <div>
       <Switch>
         <Route exact path='/' component={SignInForm}/>
         <Route path='/' component={Account}/>
       </Switch>
-    </div>
   );
 }
 
