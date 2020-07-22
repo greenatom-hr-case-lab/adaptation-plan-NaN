@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 function IconAvatar(props) {
   return (
-    <Link to={`/profile`} className="iconAvatar" onClick={() => props.updateState(3)}/>
+    <Link to={`/profile/private`} className="iconAvatar" onClick={() => props.updateState(3)}/>
   );
 }
 

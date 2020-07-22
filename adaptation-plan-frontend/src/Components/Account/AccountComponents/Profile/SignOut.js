@@ -1,4 +1,5 @@
 import React from 'react';
+import './SignOut.css'
 
 function SignOut() {
   return (

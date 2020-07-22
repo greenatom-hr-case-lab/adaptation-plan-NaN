@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import './Plan.css';
 import SelectList from "../SelectList";
 import Stage from "./Stage";
-import AdaptationField from "./AdaptationField";
 
 function Plan() {
   const [stage, setStage] = useState([
@@ -27,9 +26,6 @@ function Plan() {
     <div className="plan">
       <div className="select">
         <SelectList/>
-      </div>
-      <div className="adaptation">
-        <AdaptationField/>
       </div>
       <div className="buttonsList"> {/* here we got all our stages*/}
         { stage.map(stage => {

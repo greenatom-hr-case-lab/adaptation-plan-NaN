@@ -19,6 +19,7 @@ function AccountHeader() {
         return state;
       })
     )
+    
   }
   
   return (
@@ -29,7 +30,7 @@ function AccountHeader() {
         </a>
         <div className="title">
           {state.map(function (state) {
-            return <TitleItem state={state} updateState={updateState} key={state.id}/>
+            return <TitleItem state={state} updateState={updateState} key={state.id} locale={false}/>
             }
           )}
           {/* if руководитель then еще title если надо*/}

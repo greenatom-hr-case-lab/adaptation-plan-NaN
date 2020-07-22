@@ -14,7 +14,7 @@ function Account() {
         <Route exact path='/plan' component={Plan}/>
         <Route exact path='/news' component={News}/>
         <Route exact path='/notifications' component={Notif}/>
-        <Route exact path='/profile' component={Profile}/>
+        <Route path='/profile' component={Profile}/>
       </Switch>
     </div>
   );
