@@ -7,7 +7,10 @@ import bluebird from 'bluebird';
 
 import config from './config';
 import authRoute from './routes/auth';
+import userRoute from './routes/user';
 import errorHandler from './middlewares/errorHandler';
+import getUser from './middlewares/getUser';
+import checkToken from './middlewares/checkToken';
 
 const app = express();
 
@@ -17,10 +20,10 @@ mongoose.connect("mongodb://localhost/user-db",{ useNewUrlParser: true, useUnifi
 app.listen(config.port, err => {
 	if (err) throw err;
 
-	console.log('Server listening on port ${config.port}');
+	console.log('Server listening on port $(config.port)');
 });
 
-app.use(morgan('combined'));
+app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(session({
@@ -30,5 +33,7 @@ app.use(session({
 }));
 
 app.use('/', authRoute);
+app.use('/', checkToken, userRoute);
+app.use(getUser);
 
 app.use(errorHandler);

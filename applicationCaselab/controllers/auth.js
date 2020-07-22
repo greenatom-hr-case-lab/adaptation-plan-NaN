@@ -1,4 +1,7 @@
+import jwt from 'jsonwebtoken';
+
 import User from '../models/user';
+import config from '../config';
 
 export const signup = async (req,res,next) => {//временная шняга для создания юзера
 	const credentials = req.body;
@@ -12,36 +15,38 @@ export const signup = async (req,res,next) => {//временная шняга �
 			status: 400,
 			message
 	});
+	
+	res.json(user);
 	}
 }
 
 export const signin = async (req,res,next) => {//авторизация
 	const { login, password } = req.body;//получение данных
-	console.log("----------------------------------------------------------------------------------")
-	console.log(login, password)
-	console.log("----------------------------------------------------------------------------------")
+
 	const user = await User.findOne( {login} );//поиск по логину
 
 	if (!user) {//если нет юзера, то ошибка
-		console.log("No such user")
 		return next({
 			status: 400,
 			message: 'User not found'
 		});
 	};
-	let result;
+
 	try {
-		result = await user.comparePasswords(password);// сравнение пароля введенного и того что в базе лежит
-		console.log(result)
+		const result = await user.comparePasswords(password);// сравнение пароля введенного и того что в базе лежит
+		console.log(result);
+		if (!result){ 
+			return next({
+				status: 400,
+				message: 'Wrong Password!'
+			});
+		}		
 	} catch (e) {
-		console.log('Неверный пароль')
 		return next({
 			status: 400,
 			message: 'Bad Credentials'
-		});
+		});	
 	}
-	req.session.userId = user._id;// создание сессии для юзера
-	res.json(user);
-	result ? console.log("Its okey") : console.log("Its not okey");
+	const token = jwt.sign({_id: user._id}, config.secret);
+	res.json(token);
 }
-
