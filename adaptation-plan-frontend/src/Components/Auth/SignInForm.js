@@ -15,9 +15,7 @@ function SignInForm() {
     });
     var json = JSON.stringify(object);
     console.log(json)
-    axios.post("/signin", json, {headers: {
-      "accepts":"application/json"
-    }})
+    axios.post("/signin", json)
       .then(response => (response.data))
       .catch(error => (error));
     /*var xhr = new XMLHttpRequest();
