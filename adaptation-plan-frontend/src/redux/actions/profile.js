@@ -29,7 +29,7 @@ export function profileFetchData() {
   console.log("profileFetchData")
   return (dispatch) => {
     dispatch(fetchProfile()) //for loading
-    axios
+    axios /*https://localhost:3001/plan/*/
       .get(/*"https://localhost:3001/profile"*/"https://jsonplaceholder.typicode.com/users/1")
       .then(response => {
         console.log(response.data)

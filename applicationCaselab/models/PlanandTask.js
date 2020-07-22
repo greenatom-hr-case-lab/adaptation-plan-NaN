@@ -1,4 +1,4 @@
-import mongoose, {Schema} from 'mongoose';
+		import mongoose, {Schema} from 'mongoose';
 
 const AdaptationPlanSchema = new Schema({
 	FIOEmployee: [{type: Schema.Types.ObjectId, ref: 'User', require: true, 'unique': True}],

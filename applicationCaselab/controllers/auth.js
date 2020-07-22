@@ -22,7 +22,7 @@ export const signup = async (req,res,next) => {//временная шняга �
 
 export const signin = async (req,res,next) => {//авторизация
 	const { login, password } = req.body;//получение данных
-
+	console.log(req.body)
 	const user = await User.findOne( {login} );//поиск по логину
 
 	if (!user) {//если нет юзера, то ошибка
@@ -31,9 +31,9 @@ export const signin = async (req,res,next) => {//авторизация
 			message: 'User not found'
 		});
 	};
-
+	let result
 	try {
-		const result = await user.comparePasswords(password);// сравнение пароля введенного и того что в базе лежит
+		result = await user.comparePasswords(password);// сравнение пароля введенного и того что в базе лежит
 		console.log(result);
 		if (!result){ 
 			return next({
@@ -47,6 +47,10 @@ export const signin = async (req,res,next) => {//авторизация
 			message: 'Bad Credentials'
 		});	
 	}
+	if (result)
+		{console.log('log in')}
+	else
+		{console.log('not log in')}
 	const token = jwt.sign({_id: user._id}, config.secret);
 	res.json(token);
 }

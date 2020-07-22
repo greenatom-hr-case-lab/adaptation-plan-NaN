@@ -1,5 +1,5 @@
 import React from 'react';
-
+import axios from 'axios'
 
 function SignInForm() {
   
@@ -15,13 +15,29 @@ function SignInForm() {
     });
     var json = JSON.stringify(object);
     console.log(json)
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/signin', true)
+    axios.post("/signin", json, {headers: {
+      "accepts":"application/json"
+    }})
+      .then(response => (response.data))
+      .catch(error => (error));
+    /*var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'https://localhost:3001/signin', true)
     xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhr.send(json);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState !== 4) {
+        return
+      }
+    
+      if (xhr.status === 200) {
+        console.log('result', xhr.responseText)
+      } else {
+        console.log('err', xhr.responseText)
+      }
+    }*/
 
 // Отсылаем объект в формате JSON и с Content-Type application/json
-    xhr.send(json);
-    window.location.replace("/plan");
+  
     
   }
   return (
