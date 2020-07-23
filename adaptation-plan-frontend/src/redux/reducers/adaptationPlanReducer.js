@@ -6,7 +6,7 @@ const initialState = {
   error: ''
 }
 
-export const profileReducer = (state = initialState, action) => {
+export const adaptationPlanReducer = (state = initialState, action) => {
   switch(action.type) {
     case FETCH_PLAN_REQUEST:
       console.log("FETCH_PLAN_REQUEST")
@@ -19,15 +19,15 @@ export const profileReducer = (state = initialState, action) => {
       console.log("FETCH_PLAN_SUCCESS")
       console.log(state)
       return {
+        ...state,
         loading: false,
         plan: action.payload,
-        error: ''
       }
     case FETCH_PLAN_FAILURE:
       console.log("FETCH_PLAN_FAILURE")
       return {
+        ...state,
         loading: false,
-        plan: '',
         error: action.payload
       }
     default:
