@@ -19,15 +19,15 @@ export const profileReducer = (state = initialState, action) => {
       console.log("FETCH_PROFILE_SUCCESS")
       console.log(state)
       return {
+        ...state,
         loading: false,
         profile: action.payload,
-        error: ''
       }
     case FETCH_PROFILE_FAILURE:
       console.log("FETCH_PROFILE_FAILURE")
       return {
+        ...state,
         loading: false,
-        profile: '',
         error: action.payload
       }
     default:

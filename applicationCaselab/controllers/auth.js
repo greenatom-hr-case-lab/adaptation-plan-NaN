@@ -24,13 +24,12 @@ export const signin = async (req,res,next) => {//авторизация
 	const { login, password } = req.body;//получение данных
 	console.log(req.body)
 	const user = await User.findOne( {login} );//поиск по логину
-
 	if (!user) {//если нет юзера, то ошибка
 		return next({
 			status: 400,
 			message: 'User not found'
 		});
-	};
+	}
 	let result
 	try {
 		result = await user.comparePasswords(password);// сравнение пароля введенного и того что в базе лежит
@@ -53,4 +52,5 @@ export const signin = async (req,res,next) => {//авторизация
 		{console.log('not log in')}
 	const token = jwt.sign({_id: user._id}, config.secret);
 	res.json(token);
+	console.log(token)
 }

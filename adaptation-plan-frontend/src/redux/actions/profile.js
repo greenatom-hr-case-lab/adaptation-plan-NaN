@@ -1,17 +1,17 @@
 import axios from "axios";
-import * as types from "./types"
+import {FETCH_PROFILE_REQUEST, FETCH_PROFILE_FAILURE, FETCH_PROFILE_SUCCESS} from "./types"
 
 // when loading
 const fetchProfile = () => {
   return {
-    type: types.FETCH_PROFILE_REQUEST
+    type: FETCH_PROFILE_REQUEST
   }
 }
 
 //loaded success
 const fetchProfileSuccess = profile => {
   return {
-    type: types.FETCH_PROFILE_SUCCESS,
+    type: FETCH_PROFILE_SUCCESS,
     payload: profile
   }
 }
@@ -19,7 +19,7 @@ const fetchProfileSuccess = profile => {
 //get error
 const fetchProfileFailure = error => {
   return {
-    type: types.FETCH_PROFILE_FAILURE,
+    type: FETCH_PROFILE_FAILURE,
     payload: error
   }
 }

@@ -1,50 +1,58 @@
-import React from 'react';
-import axios from 'axios'
+import React, { useState } from 'react';
+import { connect } from 'react-redux'
+import { authFetchData } from '../../redux/actions/auth'
+import { Link, Redirect } from 'react-router-dom'
+import Loader from '../Account/AccountComponents/Loader'
 
-function SignInForm() {
+function SignInForm(props) {
+  const [click, setClick] = useState(false)
   
   function sendData(e) {
     e.preventDefault()
-    console.log('Mounted')
     var object = {};
     var formData = new FormData(document.forms.person);
   
     formData.forEach(function (value, key) {
-      console.log(value, key)
       object[key] = value;
     });
     var json = JSON.stringify(object);
-    console.log(json)
-    axios.post("/signin", json)
-      .then(response => (response.data))
+    /*console.log(json)
+    const token = axios.post("/signin", object)
+      .then(response => {
+        return response.data
+      })
       .catch(error => (error));
-    /*var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'https://localhost:3001/signin', true)
-    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    xhr.send(json);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState !== 4) {
-        return
-      }
-    
-      if (xhr.status === 200) {
-        console.log('result', xhr.responseText)
-      } else {
-        console.log('err', xhr.responseText)
-      }
-    }*/
-
-// Отсылаем объект в формате JSON и с Content-Type application/json
-  
-    
+    console.log(token)*/
+    props.fetchData(object)
+    setClick(true)
   }
   return (
-    <form name="person">
-      <input name="login" />
-      <input name="password" />
+    <div>
+      <form name="person">
+        <input name="login" />
+        <input name="password" />
+      </form>
       <button onClick={sendData}>Отправить</button>
-    </form>
-  );
+      {props.loading && <Loader/>}
+      {props.token && <Redirect from="/" to="/plan"/>}
+    </div>
+  )
 }
 
-export default SignInForm;
+const mapStateToProps = state => {
+  console.log(state.authReducer)
+  return {
+    loading: state.authReducer.loading,
+    token: state.authReducer.token,
+    error: state.authReducer.error
+  }
+}
+
+const mapDispatchToProps = (disptach, object) => {
+  console.log(object)
+  return {
+    fetchData: (object) => disptach(authFetchData(object))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm) ;

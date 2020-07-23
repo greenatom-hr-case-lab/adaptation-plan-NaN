@@ -1,41 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
+import {Route, Switch, Redirect} from "react-router-dom";
 import { profileFetchData } from "../../../../redux/actions/profile"
 import './Profile.css';
 import SignOut from "./SignOut";
 import Loader from "../Loader"
 import PrivateInfo from "./PrivateInfo";
-import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import TitleItem from "../TitleItem";
-import {Route, Switch} from "react-router-dom";
-import Plan from "../Plan/Plan";
 import News from "../News/News";
 import Notif from "../Notifications/Notif";
 
 
 function Profile(props) {
-  /*const d = new Date()
-  const [date, setDate] = useState(d.toLocaleDateString())
-  const change = date => {
-    setDate(date.toLocaleDateString())
-    hideCalendar()
-  }*/
   
   useEffect(() => {
     console.log("useEffect")
     props.fetchData()
   }, [])
-  
-  /*const [calendarShow, setCalendarShow] = useState(false)
-  
-  function showCalendar() {
-    setCalendarShow(true)
-  }
-  
-  function hideCalendar() {
-    setCalendarShow(false)
-  }*/
   
   const [state, setState] = useState([
       {id: 1, name: 'Личная информация', path: 'profile/private', show: false},
@@ -52,45 +34,50 @@ function Profile(props) {
       })
     )
   }
-  
-  if (props.loading)
-    return (<Loader/>)
-  else
-    return (
-      <div className="profile">
-        <div className="avatarCard">
-          <div className="avatar"/>
-          <div className="caption">
-            <div>
-              <div className="">{props.profile.name}</div>
-              <div>{props.profile.username}</div>
+  if (props.token) {
+    if (props.loading)
+      return <Loader/>
+    else
+      return (
+        <div className="profile">
+          <div className="avatarCard">
+            <div className="avatar"/>
+            <div className="caption">
+              <div>
+                <div className="">{props.profile.name}</div>
+                <div>{props.profile.username}</div>
+              </div>
+              <SignOut/>
             </div>
-            <SignOut/>
+          </div>
+          <div className="container">
+            <div className="titles">
+              {state.map(function (state) {
+                  return <TitleItem state={state} updateState={updateState} key={state.id} locale={true}/>
+                }
+              )}
+            </div>
+            <div className="content">
+              <Switch>
+                <Route exact path='/profile/private' component={PrivateInfo}/>
+                <Route exact path='/profile/private' component={News}/>
+                <Route exact path='/profile/private' component={Notif}/>
+              </Switch>
+            </div>
           </div>
         </div>
-        <div className="container">
-          <div className="titles">
-            {state.map(function (state) {
-                return <TitleItem state={state} updateState={updateState} key={state.id} locale={true}/>
-              }
-            )}
-          </div>
-          <div className="content">
-            <Switch>
-              <Route exact path='/profile/private' component={PrivateInfo}/>
-              <Route exact path='/profile/private' component={News}/>
-              <Route exact path='/profile/private' component={Notif}/>
-            </Switch>
-          </div>
-        </div>
-      </div>
-    );
+      )
+  }
+  else
+    return <Redirect to="/" />
 }
 
 const mapStateToProps = state => {
   console.log("mapStateToProps")
+  console.log('token', state.authReducer.token)
   console.log(state.profileReducer.loading)
   return {
+    token: state.authReducer.token,
     loading: state.profileReducer.loading,
     profile: state.profileReducer.profile,
     error: state.profileReducer.error

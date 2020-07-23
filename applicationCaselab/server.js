@@ -13,7 +13,6 @@ import getUser from './middlewares/getUser';
 import checkToken from './middlewares/checkToken';
 
 const app = express();
-
 mongoose.Promise = bluebird;
 mongoose.connect("mongodb://localhost/user-db",{ useNewUrlParser: true, useUnifiedTopology: true,useFindAndModify: false });
 
