@@ -16,7 +16,8 @@ function Plan(props) {
     {id: 5, name: 'Оценка руководителем', completed: false, doing: false},
     {id: 6, name: 'Оценка завершена', completed: false, doing: false}
   ])
-  
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  console.log('localStorage', token)
   /*useEffect(() => {
     props.fetchPlan(object)
   }, [])*/
@@ -30,7 +31,7 @@ function Plan(props) {
     )
   }
   
-  if (props.token)
+  if (token)
     return (
       <div className="plan">
         <div className="select">

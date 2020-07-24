@@ -13,7 +13,7 @@ import Notif from "../Notifications/Notif";
 
 
 function Profile(props) {
-  
+  const [token, setToken] = useState(localStorage.getItem('token'))
   useEffect(() => {
     console.log("useEffect")
     props.fetchData()
@@ -34,7 +34,7 @@ function Profile(props) {
       })
     )
   }
-  if (props.token) {
+  if (token) {
     if (props.loading)
       return <Loader/>
     else

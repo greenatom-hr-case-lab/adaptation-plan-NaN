@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_AUTH_FAILURE, FETCH_AUTH_SUCCESS, FETCH_AUTH_REQUEST } from "./types";
+import { FETCH_AUTH_FAILURE, FETCH_AUTH_SUCCESS, FETCH_AUTH_REQUEST, DELETE_AUTH_TOKEN } from "./types";
 
 const fetchAuth = () => {
   return {
@@ -21,16 +21,30 @@ const fetchAuthSuccess = token => {
   }
 }
 
+const deleteAuthToken = () => {
+  return {
+    type: DELETE_AUTH_TOKEN
+  }
+}
+
 export function authFetchData(object) {
   return (dispatch) => {
     dispatch(fetchAuth())
     axios.post("/signin", object)
       .then(response => {
         console.log(response.data)
+        localStorage.setItem('token', response.data)
         dispatch(fetchAuthSuccess(response.data))
       })
       .catch(error =>
-        dispatch(fetchAuthFailure(error.message))
+        dispatch(fetchAuthFailure(  error.message))
       )
+  }
+}
+
+export function deleteSession() {
+  return (dispatch) => {
+    dispatch(deleteAuthToken())
+    localStorage.removeItem('token')
   }
 }

@@ -1,4 +1,4 @@
-import { FETCH_AUTH_FAILURE, FETCH_AUTH_REQUEST, FETCH_AUTH_SUCCESS } from "../actions/types";
+import { FETCH_AUTH_FAILURE, FETCH_AUTH_REQUEST, FETCH_AUTH_SUCCESS, DELETE_AUTH_TOKEN } from "../actions/types";
 
 const initialState = {
   loading: false,
@@ -29,6 +29,11 @@ export const authReducer = (state = initialState, action) => {
         loading: false,
         token: action.payload
     }
+    case DELETE_AUTH_TOKEN:
+      return {
+        ...state,
+        token: ''
+      }
     default:
       return state
   }
