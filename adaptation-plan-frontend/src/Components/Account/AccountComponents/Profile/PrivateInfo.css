@@ -5,17 +5,3 @@
     margin-bottom: 16px;
 }
 
-input{
-    border-radius: 15px;
-    border: 1px solid black;
-}
-
-input:focus{
-    outline: none;
-}
-
-.calendar{
-    position: absolute;
-    margin-left: 410px;
-    border-radius: 15px;
-}

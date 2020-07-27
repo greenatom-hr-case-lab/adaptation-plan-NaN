@@ -3,8 +3,8 @@ import './Notif.css';
 
 function Notif() {
   return (
-    <div>
-      Notif
+    <div className='notification'>
+      Пока нет оповещений!
     </div>
   );
 }

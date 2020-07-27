@@ -1,51 +1,19 @@
 import React, {useState} from 'react';
-import Calendar from "react-calendar";
 import {connect} from "react-redux";
 import "./PrivateInfo.css"
+import CalendarField from "../CalendarField";
+import TextField from "../TextField";
 
 function PrivateInfo(props) {
-  const d = new Date()
-  const [date, setDate] = useState(d.toLocaleDateString())
+  const [field, setField] = useState([
+    {id: 1, name: 'Дата рождения', disabled: false},
+    {id: 2, name: 'Почта', disabled: false},
+  ])
   
-  const change = date => {
-    setDate(date.toLocaleDateString())
-    hideCalendar()
-  }
-  
-  const [calendarShow, setCalendarShow] = useState(false)
-  const [mail, setMail] = useState(props.profile.email)
-  
-  function showCalendar() {
-    setCalendarShow(true)
-  }
-  
-  function hideCalendar() {
-    setCalendarShow(false);
-  }
-  
-  function mailChange(event) {
-    setMail(event.target.value)
-  }
   return (
     <div className="privateInfo">
-      <div className="item">
-        <div>Дата рождения</div>
-        <input value={date} type="text" className={'birthday'} onClick={showCalendar}/>
-        { calendarShow
-          ?
-          <div className='calendar' >
-          <Calendar
-            onChange={change}
-            maxDate={new Date()}
-          />
-          </div>
-          :
-          ''}
-      </div>
-      <div className="item">
-        <div>Почта</div>
-        <input value={mail} onChange={mailChange} type="text" placeholder="example@greenatom.ru"/>
-      </div>
+      <CalendarField title={field[0]}/>
+      <TextField title={field[0]} placeholder={'example@greenatom.ru'} disabled={field[0].name}/>
     </div>
   );
 }

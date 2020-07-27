@@ -25,12 +25,12 @@ const fetchPlanFailure = error => {
 }
 
 //action creator where we got data from server
-export function planFetchData() {
+export function planFetchData(object) {
   console.log("planFetchData")
   return (dispatch) => {
     dispatch(fetchPlanRequest()) //for loading
     axios
-      .get(/*"https://localhost:3001/profile"*/"https://jsonplaceholder.typicode.com/users/1")
+      .post(/*"https://localhost:3001/plan", object*/)
       .then(response => {
         console.log(response.data)
         /*setTimeout(() => {

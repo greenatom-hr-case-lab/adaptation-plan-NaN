@@ -4,7 +4,7 @@
 }
 
 .avatarCard{
-    margin-left: 200px;
+    margin-left: 420px;
 }
 
 .avatar{
@@ -27,7 +27,7 @@
 
 .titles{
     display: flex;
-    width: 400px;
+    width: 250px;
     justify-content: space-between;
     margin-bottom: 70px;
 }

@@ -8,7 +8,7 @@ import Profile from "./Profile/Profile";
 
 function Account() {
   return (
-    <div>
+    <>
       <AccountHeader/> {/* An accountHeader for all components as a header*/}
       <Switch>
         <Route exact path='/plan' component={Plan}/>
@@ -16,7 +16,7 @@ function Account() {
         <Route exact path='/notifications' component={Notif}/>
         <Route path='/profile' component={Profile}/>
       </Switch>
-    </div>
+    </>
   );
 }
 

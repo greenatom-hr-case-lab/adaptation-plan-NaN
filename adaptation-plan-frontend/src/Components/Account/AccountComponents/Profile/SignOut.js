@@ -5,16 +5,16 @@ import { deleteSession } from '../../../../redux/actions/auth'
 import './SignOut.css'
 
 function SignOut(props) {
-  const [token, setToken] = useState(localStorage.getItem('token'))
-  function authOut() {
+  /*const [token, setToken] = useState(localStorage.getItem('token'))*/
+  /*function authOut() {
     setToken('')
     props.deleteToken()
-  }
+  }*/
   
   return (
     <div>
-      <button className="signOut" onClick={authOut}/>
-      {!token && <Redirect to="/"/>}
+      <button className="signOut" /*onClick={authOut}*//>
+      {/*{!token && <Redirect to="/"/>}*/}
     </div>
   );
 }

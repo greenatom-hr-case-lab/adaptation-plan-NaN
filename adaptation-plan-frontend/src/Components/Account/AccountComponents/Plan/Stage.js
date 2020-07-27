@@ -10,7 +10,6 @@ function Stage(props) {
           'stageBlock tooltip' +
           (props.stage.completed ? ' completed' : '')
         }
-        onClick={() => props.updateStage(props.stage.id)}
       >
         { props.stage.id }
         <div

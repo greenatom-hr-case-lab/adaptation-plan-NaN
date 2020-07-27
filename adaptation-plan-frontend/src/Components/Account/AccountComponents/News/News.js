@@ -3,8 +3,8 @@ import './News.css';
 
 function News() {
   return (
-    <div>
-      News
+    <div className="news">
+      Пока нет новостей!
     </div>
   );
 }

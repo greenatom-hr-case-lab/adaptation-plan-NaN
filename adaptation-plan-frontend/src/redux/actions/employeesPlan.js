@@ -21,11 +21,11 @@ const fetchPlanEmployeesFailure = error => {
   }
 }
 
-export function employeesFetchData(object) {
+export function employeesFetchData() {
   return (dispatch) => {
     dispatch(fetchPlanEmployeesRequst())
     axios
-      .post('', object)
+      .get(/*'/plan'*/)
       .then(response => dispatch(fetchPlanEmployeesSuccess(response.data)))
       .catch( error => dispatch(fetchPlanEmployeesFailure()))
   }

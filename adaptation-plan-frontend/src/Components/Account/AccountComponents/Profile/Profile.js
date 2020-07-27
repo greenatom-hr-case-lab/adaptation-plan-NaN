@@ -13,7 +13,7 @@ import Notif from "../Notifications/Notif";
 
 
 function Profile(props) {
-  const [token, setToken] = useState(localStorage.getItem('token'))
+  /*const [token, setToken] = useState(localStorage.getItem('token'))*/
   useEffect(() => {
     console.log("useEffect")
     props.fetchData()
@@ -21,8 +21,7 @@ function Profile(props) {
   
   const [state, setState] = useState([
       {id: 1, name: 'Личная информация', path: 'profile/private', show: false},
-      {id: 2, name: 'Работа', path: 'profile/job', show: false},
-      {id: 3, name: 'Кошелек', path: 'profile/pay', show: false}
+      {id: 2, name: 'Работа', path: 'profile/job', show: false}
     ]
   )
   
@@ -34,10 +33,10 @@ function Profile(props) {
       })
     )
   }
-  if (token) {
-    if (props.loading)
+  /*if (token) {*/
+    /*if (props.loading)
       return <Loader/>
-    else
+    else*/
       return (
         <div className="profile">
           <div className="avatarCard">
@@ -67,17 +66,17 @@ function Profile(props) {
           </div>
         </div>
       )
-  }
+  /*}
   else
-    return <Redirect to="/" />
+    return <Redirect to="/" />*/
 }
 
 const mapStateToProps = state => {
   console.log("mapStateToProps")
-  console.log('token', state.authReducer.token)
-  console.log(state.profileReducer.loading)
+  /*console.log('token', state.authReducer.token)
+  console.log(state.profileReducer.loading)*/
   return {
-    token: state.authReducer.token,
+    /*token: state.authReducer.token,*/
     loading: state.profileReducer.loading,
     profile: state.profileReducer.profile,
     error: state.profileReducer.error
@@ -86,9 +85,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   console.log("mapDispatchToProps")
-  return {
+   return {
     fetchData: () => dispatch(profileFetchData())
-  }
+   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
