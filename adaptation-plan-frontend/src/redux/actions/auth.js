@@ -3,21 +3,21 @@ import { FETCH_AUTH_FAILURE, FETCH_AUTH_SUCCESS, FETCH_AUTH_REQUEST, DELETE_AUTH
 
 const fetchAuth = () => {
   return {
-    type: FETCH_AUTH_REQUEST,
+    type: FETCH_AUTH_REQUEST
   }
 }
 
 const fetchAuthFailure = error => {
   return {
     type: FETCH_AUTH_FAILURE,
-    payload: error,
+    payload: error
   }
 }
 
-const fetchAuthSuccess = token => {
+const fetchAuthSuccess = data => {
   return {
     type: FETCH_AUTH_SUCCESS,
-    payload: token,
+    payload: data
   }
 }
 

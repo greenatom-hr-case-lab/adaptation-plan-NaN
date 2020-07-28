@@ -3,6 +3,7 @@ import { FETCH_AUTH_FAILURE, FETCH_AUTH_REQUEST, FETCH_AUTH_SUCCESS, DELETE_AUTH
 const initialState = {
   loading: false,
   token: '',
+  role: '',
   error: ''
 }
 
@@ -27,12 +28,14 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        token: action.payload
+        token: action.payload.token,
+        role: action.payload.role
     }
     case DELETE_AUTH_TOKEN:
       return {
         ...state,
-        token: ''
+        token: '',
+        role: ''
       }
     default:
       return state

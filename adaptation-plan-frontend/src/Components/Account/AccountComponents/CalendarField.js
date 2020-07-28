@@ -4,11 +4,9 @@ import '../AccountStyles/CalendarField.css'
 import Datepicker from "react-datepicker"
 function CalendarField(props) {
   
-  const [date, setDate] = useState(props.date)
-  
   const change = date => {
     hideCalendar()
-    setDate(date.toLocaleDateString())
+    props.update(date)
   }
   
   const [calendarShow, setCalendarShow] = useState(false)
@@ -24,13 +22,13 @@ function CalendarField(props) {
   return (
       <div className="item">
         <span>{props.title.name}</span>
-        <input value={date} type="text" className="date" onFocus={showCalendar}  onBlur={hideCalendar}/>
+        <input value={props.value} type="text" className="date" onFocus={showCalendar}  onBlur={hideCalendar} disabled={props.disabled}/>
         {
           calendarShow
         &&
         <div className='calendar'>
           <Calendar
-            onChange={change}
+            onChange={() => change}
             maxDate={props.maxDate}
           />
         </div>

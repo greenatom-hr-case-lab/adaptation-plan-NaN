@@ -3,11 +3,10 @@ import Select from 'react-select';
 import '../AccountStyles/SelectField.css'
 
 function SelectField(props) {
-  const colourOptions = { label: ''}
-  const values = [
-    {label: 'wdwefw'},
-    {label: 'wefwe'}
-  ]
+  const startValue = { label: ''}
+  const options = props.options.map(function(option, index) {
+    return {id: index+1, label: option, value: index}
+  })
   
   const customStyles = {
     valueContainer: (provided) => ({
@@ -64,16 +63,18 @@ function SelectField(props) {
     })
   }
 
+    const onChange = (newValue) => {
+      props.update(newValue)
+    }
   return (
     <div className="item">
       <span>{props.title.name}</span>
       <Select /*className="selectField"*/
-        defaultValue={colourOptions}
-        /*options={props.value}*/
-        options={values}
+        defaultValue={props.value}
+        options={options}
         styles={customStyles}
-        /*theme={customStyles}*/
-        /*formatGroupLabel={formatGroupLabel}*/
+        onChange={() => onChange}
+        isDisabled={props.disabled}
       />
     </div>
     
