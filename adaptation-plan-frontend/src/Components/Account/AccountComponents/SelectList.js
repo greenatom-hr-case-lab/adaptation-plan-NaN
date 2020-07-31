@@ -1,27 +1,32 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Select from 'react-select';
 import AsyncSelect from 'react-select/async';
 import '../AccountStyles/SelectList.css'
-import {employeesFetchData} from "../../../redux/actions/employeesPlan";
-import {planFetchData} from "../../../redux/actions/adaptationPlan";
+import {getEmployees} from "../../../redux/actions/employeesPlan";
+import {getPlanCurrentEmployee} from "../../../redux/actions/adaptationPlan";
 import {connect} from "react-redux";
 
 function SelectList(props) {
-  const colourOptions = {
-    label: 'Выберите сотрудника..'
-}
-  
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  const startValue = { label: 'Выберите..', value: ''}
+  console.log('selectlist')
+  useEffect(() => {
+    props.getEmployees({token: props.token})
+  }, [])
+/*
   const groupedOptions = [
     {id: 1, label: 'Дмитрий Хотин', value: 'Дмитрий Хотин'},
     {id: 2, label: 'Александр Пушкин', value: 'Александр Пушкин'}
   ]
+*/
   
-  const [options, setOptions] = useState([
-    {id: 1, label: 'Дмитрий Хотин', value: 'Дмитрий Хотин'},
-    {id: 2, label: 'Александр Пушкин', value: 'Александр Пушкин'}
-    ])
-  
-  /*const [options, setOptions] = useState(props.state.employees)*/
+  const [options, setOptions] = useState(
+    props.employees.map((employee, index) => {
+      return {
+        id: employee._id, label: employee.name, value: index
+      }
+    })
+  )
   
   const customTheme = theme => {
     return {
@@ -35,43 +40,43 @@ function SelectList(props) {
   }
   
   const onChange = (newValue) => {
-    console.log({
-      name: newValue.label.split(' ')[0],
-      secondname: newValue.label.split(' ')[1]
-    })
-    /*props.fetchPlan({
-      name: newValue.label.split(' ')[0],
-      secondname: newValue.label.split(' ')[1]
-    })*/
+    console.log(newValue)
+    props.updateStage()
+    props.planCurrentEmployee({token: token, payload: {_id: newValue.id}})
   }
-  return (
-    <div className='selectList'>
-      <Select
-        defaultValue={colourOptions}
-        options={groupedOptions}
-        theme={customTheme}
-        /*formatGroupLabel={formatGroupLabel}*/
-      />
-      {/*<AsyncSelect
-        defaultValue={colourOptions}
-        onMenuOpen={onMenuOpen}
-        defaultOptions={options}
-        onChange={onChange}
-        theme={customTheme}
-      />*/}
-    </div>
-  );
+  
+  if (props.employees)
+    return (
+      <div className='selectList'>
+        {/*  <Select
+          defaultValue={''}
+           options={options}
+          theme={customTheme}
+          onChange={onChange}
+        />*/}
+        <AsyncSelect
+          defaultValue={startValue}
+          defaultOptions={options}
+          onChange={onChange}
+          theme={customTheme}
+        />
+      </div>
+    )
+  else
+    return (<div>Loading...</div>)
 }
 
 const mapStateToProps = state => {
   return {
     token: state.authReducer.token,
-    employees: state.employeesPlanReducer.employees
+    employees: state.employeesPlanReducer.employees,
+    plan: state.adaptationPlanReducer.plan,
   }
 }
 const mapDispatchToProps = (dispatch, object) => {
   return {
-    fetchPlan: (object) => dispatch(planFetchData(object))
+    getEmployees: (object) => dispatch(getEmployees(object.token)),
+    planCurrentEmployee: (object) => dispatch(getPlanCurrentEmployee(object.payload, object.token))
   }
 }
 

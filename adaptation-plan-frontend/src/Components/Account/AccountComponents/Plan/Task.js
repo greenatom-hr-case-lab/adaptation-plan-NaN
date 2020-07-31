@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {createRef, useState} from 'react';
 import './Task.css'
 import CalendarField from "../CalendarField";
-import {employeesFetchData} from "../../../../redux/actions/employeesPlan";
-import {addTask, planFetchData, deleteTask} from "../../../../redux/actions/adaptationPlan";
+import {updatePlanTask, deleteTask} from '../../../../redux/actions/adaptationPlan'
 import {connect} from "react-redux";
 
 function Task(props) {
@@ -11,23 +10,81 @@ function Task(props) {
     {id: 2, name: 'Конец задачи', disabled: true}
   ])
   
+  const [taskPeriodStart, setTaskPeriodStart] = useState(props.task.taskPeriodStart ? props.task.taskPeriodStart : '')
+  const [taskPeriodEnd, setTaskPeriodEnd] = useState(props.task.taskPeriodEnd ? props.task.taskPeriodEnd : '')
+
+  let resultTask = createRef()
+  let taskTitle = createRef()
+  let bodyTask = createRef()
+  
+  const disabled = !(props.user.role === 'Сотрудник' && (props.plan.stage === 'Заполнение сотрудником' || props.plan.stage === 'Выполнение') ||
+    props.user.role === 'HR-сотрудник' && (props.plan.stage === 'Согласование руководителем' || props.plan.stage === 'Оценка руководителем') ||
+    props.user.role === 'Руководитель' && (props.plan.stage === 'Согласование руководителем' || props.plan.stage === 'Оценка руководителем' || props.plan.stage === 'Заполнение сотрудником' || props.plan.stage === 'Выполнение'))
+  
+  const updatePlan = () => {
+    if (
+      taskPeriodStart &&
+      taskPeriodEnd &&
+      taskTitle.current.value &&
+      bodyTask.current.value
+    ) props.updateTask({ token: props.token, task: {
+        index: props.index,
+        _id: props.plan._id,
+        resultTask: resultTask.current.checked,
+        taskTitle: taskTitle.current.value,
+        bodyTask: bodyTask.current.value,
+        taskPeriodStart: taskPeriodStart,
+        taskPeriodEnd: taskPeriodEnd
+      }})
+  }
+  
+  const updateTaskPeriodStart = (value) => {
+    setTaskPeriodStart(value)
+    updatePlan()
+  }
+  const updateTaskPeriodEnd = (value) => {
+    setTaskPeriodEnd(value)
+    updatePlan()
+  }
   const deleteTask = () => {
-    props.deleteTodo(props.index)
+    props.deleteTask({token: props.token, payload: {_id: props.plan._id, index: props.index}})
   }
   return (
     <div className='task'>
       <div className="taskTitle">
-        <input type='checkbox' className="checkBox" checked={props.task.resultTask} disabled={}/>
-        <input type='text' className="taskSubTitle" placeholder='Введите название задачи..' maxLength='80' value={props.task.title ? props.task.title : ''}/>
-        <button className="deleteTask" onClick={deleteTask}/>
+        <input type='checkbox'
+               className="checkBox"
+               defaultChecked={props.task.resultTask}
+               disabled={disabled}
+               ref={resultTask}
+               onBlur={updatePlan}/>
+        <input type='text'
+               className="taskSubTitle"
+               placeholder='Введите название задачи..'
+               maxLength='80'
+               defaultValue={props.task.title ? props.task.title : ''}
+               disabled={disabled}
+               ref={taskTitle}
+               onBlur={updatePlan}/>
+        <button className="deleteTask" onClick={deleteTask} disabled={disabled}/>
       </div>
       <div className="taskPeriod">
-        <CalendarField title={field[0]} value={props.task.taskPeriodStart ? props.task.taskPeriodStart : ''}/>
+        <CalendarField title={field[0]}
+                       value={taskPeriodStart}
+                       disabled={disabled}
+                       update={updateTaskPeriodStart}/>
       </div>
       <div className="taskPeriod">
-        <CalendarField title={field[1]} value={props.task.taskPeriodEnd ? props.task.taskPeriodEnd : ''}/>
+        <CalendarField title={field[1]}
+                       value={taskPeriodEnd}
+                       disabled={disabled}
+                       update={updateTaskPeriodEnd}/>
       </div>
-      <textarea className="taskText" value={props.task.bodyTask ? props.task.bodyTask : ''}/>
+      <textarea className="taskText"
+                defaultValue={props.task.bodyTask ? props.task.bodyTask : ''}
+                disabled={disabled}
+                ref={bodyTask}
+                onBlur={updatePlan}/>
       <p className="taskDate">Дата создания: {props.plan.position ? props.plan.position : ''}</p>
     </div>
   );
@@ -37,11 +94,13 @@ const mapStateToProps = state => {
   return {
     token: state.authReducer.token,
     plan: state.adaptationPlanReducer.plan,
+    user: state.authReducer.user
   }
 }
 const mapDispatchToProps = (dispatch, object) => {
   return {
-    deleteTodo: (object) => dispatch(deleteTask(object))
+    updateTask: (object) => dispatch(updatePlanTask(object.task, object.token)),
+    deleteTask: (object) => dispatch(deleteTask(object.payload, object.token))
   }
 }
 

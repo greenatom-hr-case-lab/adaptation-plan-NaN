@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Select from 'react-select';
 import '../AccountStyles/SelectField.css'
 
 function SelectField(props) {
-  const startValue = { label: ''}
-  const options = props.options.map(function(option, index) {
-    return {id: index+1, label: option, value: index}
-  })
+  const startValue = { label: 'Выберите..', value: ''}
+  console.log(props.options)
+  const [options, setOptions] = useState(props.options.map(function(option, index) {
+    return {id: option._id, label: option.name, value: index}
+  }))
   
   const customStyles = {
     valueContainer: (provided) => ({
@@ -64,16 +65,17 @@ function SelectField(props) {
   }
 
     const onChange = (newValue) => {
-      props.update(newValue)
+    console.log(newValue)
+    props.update(newValue)
     }
   return (
     <div className="item">
       <span>{props.title.name}</span>
       <Select /*className="selectField"*/
-        defaultValue={props.value}
+        defaultValue={props.value ? props.value : startValue}
         options={options}
         styles={customStyles}
-        onChange={() => onChange}
+        onChange={(value) => props.update(value)}
         isDisabled={props.disabled}
       />
     </div>

@@ -1,5 +1,6 @@
 .newPlan{
     width: max-content;
+    position: absolute;
 }
 
 .offer{

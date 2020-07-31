@@ -6,7 +6,8 @@ function CalendarField(props) {
   
   const change = date => {
     hideCalendar()
-    props.update(date)
+    console.log(date.toLocaleDateString())
+    props.update(date.toLocaleDateString())
   }
   
   const [calendarShow, setCalendarShow] = useState(false)
@@ -16,19 +17,20 @@ function CalendarField(props) {
   }
   
   function hideCalendar() {
+    console.log('hidecalendar')
     setTimeout(() => setCalendarShow(false), 100)
   }
   
   return (
       <div className="item">
         <span>{props.title.name}</span>
-        <input value={props.value} type="text" className="date" onFocus={showCalendar}  onBlur={hideCalendar} disabled={props.disabled}/>
+        <input defaultValue={props.value} type="text" className="date" onFocus={showCalendar} disabled={props.disabled}/>
         {
           calendarShow
         &&
         <div className='calendar'>
           <Calendar
-            onChange={() => change}
+            onChange={change}
             maxDate={props.maxDate}
           />
         </div>

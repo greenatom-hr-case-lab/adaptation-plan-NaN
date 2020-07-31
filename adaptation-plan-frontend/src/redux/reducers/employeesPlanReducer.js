@@ -1,47 +1,35 @@
 import {
-  FETCH_PLAN_EMPLOYEES_FAILURE,
-  FETCH_PLAN_EMPLOYEES_REQUEST,
-  FETCH_PLAN_EMPLOYEES_SUCCESS,
-  FETCH_PLAN_HREMPLOYEES,
-  FETCH_PLAN_LEADERS
+  DELETE_AUTH_TOKEN,
+  FETCH_PLAN_DIRECTORS,
+  FETCH_PLAN_EMPLOYEES
 } from '../actions/types'
 
 const initialState = {
   loading: false,
   employees: '',
   error: '',
-  leaders: '',
-  hrEmployees: ''
+  directors: ''
 }
 
 export const employeesPlanReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_PLAN_EMPLOYEES_REQUEST:
+    case FETCH_PLAN_DIRECTORS:
+      console.log('directors', action.payload)
       return {
         ...state,
-        loading: true
+        directors: action.payload
       }
-    case FETCH_PLAN_EMPLOYEES_FAILURE:
+    case FETCH_PLAN_EMPLOYEES:
       return {
         ...state,
-        loading: false,
-        error: action.payload
-      }
-    case FETCH_PLAN_EMPLOYEES_SUCCESS:
-      return {
-        ...state,
-        loading: false,
         employees: action.payload
       }
-    case FETCH_PLAN_HREMPLOYEES:
+    case DELETE_AUTH_TOKEN:
       return {
-        ...state,
-        hrEmployees: action.payload
-      }
-    case FETCH_PLAN_LEADERS:
-      return {
-        ...state,
-        leaders: action.payload
+        loading: false,
+        employees: '',
+        error: '',
+        directors: ''
       }
     default:
       return state

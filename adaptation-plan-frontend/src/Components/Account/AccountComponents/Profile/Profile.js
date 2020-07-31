@@ -8,15 +8,14 @@ import Loader from "../Loader"
 import PrivateInfo from "./PrivateInfo";
 import 'react-calendar/dist/Calendar.css';
 import TitleItem from "../TitleItem";
-import News from "../News/News";
-import Notif from "../Notifications/Notif";
+
 
 
 function Profile(props) {
-  /*const [token, setToken] = useState(localStorage.getItem('token'))*/
+  const [token, setToken] = useState(localStorage.getItem('token'))
   useEffect(() => {
-    console.log("useEffect")
-    props.fetchData()
+    console.log('useEffect token', props.token)
+    props.fetchData({token: token})
   }, [])
   
   const [state, setState] = useState([
@@ -33,18 +32,18 @@ function Profile(props) {
       })
     )
   }
-  /*if (token) {*/
-    /*if (props.loading)
+  if (token) {
+    if (props.loading)
       return <Loader/>
-    else*/
+    else
       return (
         <div className="profile">
           <div className="avatarCard">
             <div className="avatar"/>
             <div className="caption">
               <div>
-                <div className="">{props.profile.name}</div>
-                <div>{props.profile.username}</div>
+                <div className="titleName">{props.profile.name}</div>
+                <div>{props.profile.role}</div>
               </div>
               <SignOut/>
             </div>
@@ -59,34 +58,29 @@ function Profile(props) {
             <div className="content">
               <Switch>
                 <Route exact path='/profile/private' component={PrivateInfo}/>
-                <Route exact path='/profile/private' component={News}/>
-                <Route exact path='/profile/private' component={Notif}/>
               </Switch>
             </div>
           </div>
         </div>
       )
-  /*}
+  }
   else
-    return <Redirect to="/" />*/
+    return <Redirect to="/" />
 }
 
 const mapStateToProps = state => {
-  console.log("mapStateToProps")
-  /*console.log('token', state.authReducer.token)
-  console.log(state.profileReducer.loading)*/
+  console.log('profile', state.profileReducer.profile)
   return {
-    /*token: state.authReducer.token,*/
+    token: state.authReducer.token,
     loading: state.profileReducer.loading,
     profile: state.profileReducer.profile,
     error: state.profileReducer.error
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  console.log("mapDispatchToProps")
+const mapDispatchToProps = (dispatch, object) => {
    return {
-    fetchData: () => dispatch(profileFetchData())
+    fetchData: (object) => dispatch(profileFetchData(object))
    }
 }
 

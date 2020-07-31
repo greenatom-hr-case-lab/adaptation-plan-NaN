@@ -35,3 +35,8 @@
     align-items: center;
 }
 
+.action{
+    position: absolute;
+    left: 610px;
+    top: 300px;
+}

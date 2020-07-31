@@ -1,64 +1,40 @@
 import axios from 'axios'
-import { FETCH_PLAN_EMPLOYEES_FAILURE, FETCH_PLAN_EMPLOYEES_REQUEST, FETCH_PLAN_EMPLOYEES_SUCCESS, FETCH_PLAN_HREMPLOYEES, FETCH_PLAN_LEADERS } from './types'
+import { FETCH_PLAN_EMPLOYEES, FETCH_PLAN_DIRECTORS } from './types'
 
-const fetchPlanEmployeesRequst = () => {
+const fetchPlanEmployees = (employees) => {
   return {
-    type: FETCH_PLAN_EMPLOYEES_REQUEST,
-  }
-}
-
-const fetchPlanEmployeesSuccess = employees => {
-  return {
-    type: FETCH_PLAN_EMPLOYEES_SUCCESS,
+    type: FETCH_PLAN_EMPLOYEES,
     payload: employees
   }
 }
 
-const fetchPlanEmployeesFailure = error => {
+const fetchPlanDirectors = (directors) => {
   return {
-    type: FETCH_PLAN_EMPLOYEES_FAILURE,
-    payload: error
+    type: FETCH_PLAN_DIRECTORS,
+    payload: directors
   }
 }
 
-const fetchHREmployees = (hrEmployees) => {
-  return {
-    type: FETCH_PLAN_HREMPLOYEES,
-    payload: hrEmployees
-  }
-}
-
-const fetchLeaders = (leaders) => {
-  return {
-    type: FETCH_PLAN_LEADERS,
-    payload: leaders
-  }
-}
-
-export function employeesFetchData() {
-  return (dispatch) => {
-    dispatch(fetchPlanEmployeesRequst())
-    axios
-      .get(/*'/plan'*/)
-      .then(response => dispatch(fetchPlanEmployeesSuccess(response.data)))
-      .catch( error => dispatch(fetchPlanEmployeesFailure()))
-  }
-}
-
-export function hrEmployeesFetchData() {
+export function getDirectors(token) {
   return (dispatch) => {
     axios
-      .get(/*'/plan/hremployeers'*/)
-      .then(response => dispatch(fetchHREmployees(response.data)))
+      .post('/plan/directors', {} ,{
+        headers: {
+          authorization: token
+    }})
+      .then(response => dispatch(fetchPlanDirectors(response.data)))
       .catch( error => console.log(error))
   }
 }
 
-export function leadersFetchData() {
+export function getEmployees(token) {
   return (dispatch) => {
     axios
-      .get(/*'/plan/leaders'*/)
-      .then(response => dispatch(fetchLeaders(response.data)))
+      .post('/plan', {} ,{
+        headers: {
+          authorization: token
+    }})
+      .then(response => dispatch(fetchPlanEmployees(response.data)))
       .catch( error => console.log(error))
   }
 }

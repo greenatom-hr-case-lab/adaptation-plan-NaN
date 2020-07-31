@@ -7,9 +7,10 @@ function TextField(props) {
     <div className="item">
       <span>{props.title.name}</span>
       <input
-        value={props.value}
+        defaultValue={props.value}
         className="textField"
         type="text"
+        onBlur={(e) => props.update(e.target.value)}
       disabled={props.disabled}/>
     </div>
   );

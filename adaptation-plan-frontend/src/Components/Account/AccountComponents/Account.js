@@ -9,7 +9,7 @@ import Profile from "./Profile/Profile";
 function Account() {
   return (
     <>
-      <AccountHeader/> {/* An accountHeader for all components as a header*/}
+      <AccountHeader/>
       <Switch>
         <Route exact path='/plan' component={Plan}/>
         <Route exact path='/news' component={News}/>
